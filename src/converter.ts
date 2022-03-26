@@ -11,16 +11,28 @@ export function convertPaperback(rawJson: string): AidokuBackup {
     const aidokuObject: AidokuBackup = {
         history: [],
         manga: [],
-        date: 0,
-        version: 'pb-aidoku-v0.0.1',
         chapters: [],
-        library: []
+        library: [],
+        sources: [],
+        date: 0,
+        name: 'Paperback Backup',
+        version: 'pb-aidoku-v0.0.1'
     }
 
-    const pbObj : PBBackup = JSON.parse(rawJson)
+    const pbObj: PBBackup = JSON.parse(rawJson)
     const paperbackIdSet: Set<string> = new Set<string>()
+    const mangaIdSet: Set<string> = new Set<string>()
+    const aidokuSourcesSet: Set<string> = new Set<string>()
+
+    aidokuObject.date = pbObj.date + 978307200 // convert apple format to epoch
 
     for (const item of pbObj.library) {
+        for (const manga of pbObj.sourceMangas) {
+            if (manga.manga.id == item.manga.id) {
+                mangaIdSet.add(manga.mangaId)
+                break
+            }
+        }
         paperbackIdSet.add(item.manga.id)
     }
 
@@ -32,12 +44,13 @@ export function convertPaperback(rawJson: string): AidokuBackup {
         if (sourceId === '_unknown') {
             continue
         }
+        aidokuSourcesSet.add(sourceId)
         if (item.mangaId.length < 10 && sourceId == 'multi.mangadex') {
             // console.error( `OLD MangaDex ID MIGRTE: ${item.mangaId} - ${item.manga.titles[0]}`)
             continue
         }
 
-        const aidokuLibraryItem : AidokuLibrary = {
+        const aidokuLibraryItem: AidokuLibrary = {
             mangaId: item.mangaId ?? '',
             lastUpdated: 0,
             categories: [],
@@ -46,7 +59,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
             lastOpened: 0
         }
 
-        const aidokuMangaItem : AidokuManga = {
+        const aidokuMangaItem: AidokuManga = {
             id: item.mangaId ?? '',
             lastUpdate: 0,
             author: item.manga.author,
@@ -65,18 +78,23 @@ export function convertPaperback(rawJson: string): AidokuBackup {
     }
 
     for (const item of pbObj.chapterMarkers) {
-        if (!paperbackIdSet.has(item.chapter.mangaId)) {
+        if (!item.chapter) {
+            console.log(item)
+            continue
+        }
+        if (!mangaIdSet.has(item.chapter.mangaId)) {
             continue
         }
         const sourceId = getAidokuSourceId(item.chapter.sourceId)
         if (sourceId === '_unknown') {
             continue
         }
+        aidokuSourcesSet.add(sourceId)
         if (item.chapter.mangaId.length < 10 && sourceId == 'multi.mangadex') {
             continue
         }
 
-        const aidokuChapterItem : AidokuChapter = {
+        const aidokuChapterItem: AidokuChapter = {
             volume: item.chapter.volume   ?? '',
             mangaId: item.chapter.mangaId ?? '',
             lang: item.chapter.langCode   ?? '',
@@ -84,21 +102,24 @@ export function convertPaperback(rawJson: string): AidokuBackup {
             scanlator: item.chapter.group ?? '',
             title: item.chapter.name == '' ? 'Chapter ' + item.chapter.chapNum.toString() : item.chapter.name,
             sourceId: sourceId,
-            dateUploaded: 0,
+            dateUploaded: item.chapter.time + 978307200,
             chapter: item.chapter.chapNum ?? 0,
-            sourceOrder: 0
+            sourceOrder: Math.abs(item.chapter.sortingIndex) ?? 0,
         }
-        const aidokuHistoryItem : AidokuHistory = {
+        const aidokuHistoryItem: AidokuHistory = {
             progress: item.lastPage,
             mangaId: item.chapter.mangaId ?? '',
             chapterId: item.chapter.id    ?? '',
             completed: item.completed,
-            sourceId: item.chapter.sourceId,
-            dateRead: item.time  // may need to change this if the date format is different
+            sourceId: sourceId,
+            dateRead: item.time + 978307200
         }
         aidokuObject.chapters.push(aidokuChapterItem)
         aidokuObject.history.push(aidokuHistoryItem)
     }
+
+    aidokuObject.sources = Array.from(aidokuSourcesSet)
+
     return aidokuObject;
 }
 
