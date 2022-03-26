@@ -1,24 +1,45 @@
 import * as fs from 'fs';
+import { resolve } from 'path';
+
+import { PBBackup } from './interfaces';
 import { convertPaperback } from './converter';
 
-if (require.main === module) {
-    main().catch((err) => console.log(`Uncaught exception: \n\n${err}`));
-}
+const main = async (args: any[]) => {
+	// Args 0 and 1 are the path to node and then the path to the current file
+	// Get the input file
+	const inputFile = args[2];
 
-// yarn build; yarn start;
-async function main() {
-    console.log("Converting...");
+	// Check if the input file exists
+	if (!fs.existsSync(inputFile)) {
+		console.error(`The input file ${inputFile} does not exist.`);
+		process.exit(1);
+	}
 
-    // Importing backup
-    const importJson = fs.readFileSync('./input-output/paperback.json', 'utf8');
+	// Get the output file
+	const outputFile = args[3];
 
-    // Aidoku Backup JSON Object returned
-    const aidokuObject = convertPaperback(importJson);
+	// Get the absolute path to the output file
+	const outputFileAbsolutePath = resolve(outputFile);
 
-    // Write to file
-    const data = JSON.stringify(aidokuObject);
-    const date_str = new Date(Date.now()).toISOString().split('T')[0]
-    fs.writeFileSync(`./input-output/aidoku_${date_str}.json`, data)
+	// Log that we are starting the conversion
+	console.log('Converting...');
 
-    console.log(`Done!\nCheck ./input-output/aidoku_${date_str}.json`);
-}
+	// Import the backup
+	const importJson = fs.readFileSync(inputFile, 'utf8');
+
+	// Parse the json as a paperback backup
+	const pbObj: PBBackup = JSON.parse(importJson);
+
+	// Convert the backup to aidoku
+	const aidokuObject = convertPaperback(pbObj);
+
+	// Stringify the aidoku object
+	const data = JSON.stringify(aidokuObject, null, 4);
+
+	// Write to the output file
+	fs.writeFileSync(outputFileAbsolutePath, data);
+
+	console.log(`Done!\nCheck ${outputFileAbsolutePath}`);
+};
+
+main(process.argv);
