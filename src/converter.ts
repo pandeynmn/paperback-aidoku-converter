@@ -27,16 +27,12 @@ export function convertPaperback(rawJson: string): AidokuBackup {
     aidokuObject.date = pbObj.date + 978307200 // convert apple format to epoch
 
     for (const item of pbObj.library) {
-        for (const manga of pbObj.sourceMangas) {
-            if (manga.manga.id == item.manga.id) {
-                mangaIdSet.add(manga.mangaId)
-                break
-            }
-        }
         paperbackIdSet.add(item.manga.id)
     }
 
     for (const item of pbObj.sourceMangas) {
+        mangaIdSet.add(item.mangaId)
+
         if (!paperbackIdSet.has(item.manga.id)) {
             continue
         }
