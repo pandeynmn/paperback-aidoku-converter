@@ -8,6 +8,7 @@ import {
 } from './types';
 
 export function convertPaperback(rawJson: string): AidokuBackup {
+    const date_str = new Date(Date.now()).toISOString().split('T')[0]
     const aidokuObject: AidokuBackup = {
         history: [],
         manga: [],
@@ -15,7 +16,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
         library: [],
         sources: [],
         date: 0,
-        name: 'Paperback Backup',
+        name: `Paperback Backup ${date_str}`,
         version: 'pb-aidoku-v0.0.1'
     }
 
