@@ -1,12 +1,14 @@
 // Generated using QuickType https://app.quicktype.io/
 
 export type AidokuBackup = {
+    library:  Library[];
     history:  History[];
     manga:    Manga[];
-    date:     number;
-    version:  string;
     chapters: Chapter[];
-    library:  Library[];
+    sources:  string[];
+    date:     number;
+    name?:    string;
+    version:  string;
 }
 
 export interface History {
