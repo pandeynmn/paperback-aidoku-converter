@@ -122,11 +122,11 @@ export function convertPaperback(rawJson: string): AidokuBackup {
 }
 
 function getAidokuSourceId(sourceId: string): string {
-    switch (sourceId) {
-        case 'MangaLife':
-        case 'MangaSee':
+    switch (sourceId.toLowerCase()) {
+        case 'mangalife':
+        case 'mangasee':
             return 'en.nepnep'
-        case 'MangaDex':
+        case 'mangadex':
             return 'multi.mangadex'
         default:
             return '_unknown'
