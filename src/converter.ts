@@ -32,8 +32,6 @@ export function convertPaperback(rawJson: string): AidokuBackup {
     }
 
     for (const item of pbObj.sourceMangas) {
-        mangaIdSet.add(item.mangaId)
-
         if (!paperbackIdSet.has(item.manga.id)) {
             continue
         }
@@ -41,11 +39,12 @@ export function convertPaperback(rawJson: string): AidokuBackup {
         if (sourceId === '_unknown') {
             continue
         }
-        aidokuSourcesSet.add(sourceId)
         if (item.mangaId.length < 10 && sourceId == 'multi.mangadex') {
             // console.error( `OLD MangaDex ID MIGRTE: ${item.mangaId} - ${item.manga.titles[0]}`)
             continue
         }
+        mangaIdSet.add(item.mangaId)
+        aidokuSourcesSet.add(sourceId)
 
         const aidokuLibraryItem: AidokuLibrary = {
             mangaId: item.mangaId ?? '',
@@ -76,7 +75,6 @@ export function convertPaperback(rawJson: string): AidokuBackup {
 
     for (const item of pbObj.chapterMarkers) {
         if (!item.chapter) {
-            console.log(item)
             continue
         }
         if (!mangaIdSet.has(item.chapter.mangaId)) {
@@ -86,10 +84,13 @@ export function convertPaperback(rawJson: string): AidokuBackup {
         if (sourceId === '_unknown') {
             continue
         }
-        aidokuSourcesSet.add(sourceId)
         if (item.chapter.mangaId.length < 10 && sourceId == 'multi.mangadex') {
             continue
         }
+        aidokuSourcesSet.add(sourceId)
+
+        const sourceOrder = new Int16Array(1)
+        sourceOrder[0] = Math.abs(item.chapter.sortingIndex)
 
         const aidokuChapterItem: AidokuChapter = {
             volume: item.chapter.volume   ?? '',
@@ -101,7 +102,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
             sourceId: sourceId,
             dateUploaded: item.chapter.time + 978307200,
             chapter: item.chapter.chapNum ?? 0,
-            sourceOrder: Math.abs(item.chapter.sortingIndex) ?? 0,
+            sourceOrder: sourceOrder[0] ?? 0,
         }
         const aidokuHistoryItem: AidokuHistory = {
             progress: item.lastPage,
