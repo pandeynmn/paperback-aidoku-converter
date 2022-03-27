@@ -49,5 +49,6 @@ node_modules/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+input-output/*.json
 input-output/paperback.json
 input-output/aidoku_*.json
