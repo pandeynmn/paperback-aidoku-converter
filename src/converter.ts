@@ -60,14 +60,14 @@ export function convertPaperback(rawJson: string): AidokuBackup {
             lastUpdate: 0,
             author: item.manga.author,
             url: '',
-            nsfw: item.manga.hentai ? 1 : 0,
+            nsfw: item.manga.hentai ? 2 : 0,
             tags: [],
             title: item.manga.titles[0],
             sourceId: sourceId,
             desc: item.manga.desc,
             cover: item.manga.image,
             viewer: Number(item.manga.additionalInfo.views ?? '0'),
-            status: item.manga.status == 'Ongoing' ? 1 : 0,
+            status: getStatus(item.manga.status ?? ''),
         }
         aidokuObject.library.push(aidokuLibraryItem)
         aidokuObject.manga  .push(aidokuMangaItem)
@@ -130,5 +130,22 @@ function getAidokuSourceId(sourceId: string): string {
             return 'multi.mangadex'
         default:
             return '_unknown'
+    }
+}
+
+function getStatus(status: string): number {
+    switch (status.toLowerCase()) {
+        case 'ongoing':
+            return 1
+        case 'completed':
+            return 2
+        case 'abandoned':
+            return 4
+        case 'haitus':
+            return 4
+        case 'unknown':
+            return 0
+        default:
+            return 1
     }
 }
