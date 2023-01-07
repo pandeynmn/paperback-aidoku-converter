@@ -17,7 +17,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
         sources: [],
         date: 0,
         name: `Paperback Backup ${date_str}`,
-        version: 'pb-aidoku-v0.0.1'
+        version: 'pb-aidoku-v23.1.0'
     }
 
     const pbObj: PBBackup = JSON.parse(rawJson)
@@ -66,7 +66,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
             sourceId: sourceId,
             desc: item.manga.desc,
             cover: item.manga.image,
-            viewer: Number(item.manga.additionalInfo.views ?? '0'),
+            viewer: 0,
             status: getStatus(item.manga.status ?? ''),
         }
         aidokuObject.library.push(aidokuLibraryItem)
@@ -123,11 +123,207 @@ export function convertPaperback(rawJson: string): AidokuBackup {
 
 function getAidokuSourceId(sourceId: string): string {
     switch (sourceId.toLowerCase()) {
+        case '':
+            return 'en.tcbscans'
+        case '':
+            return 'en.voidscans'
+        case '':
+            return 'en.luminousscans'
+        case '':
+            return 'id.mangkomik'
+        case '':
+            return 'en.manhwafreak'
+        case '':
+            return 'en.acescans'
+        case '':
+            return 'ar.swatmanga'
+        case '':
+            return 'en.readkomik'
+        case '':
+            return 'id.westmanga'
+        case '':
+            return 'fr.blackarmy'
+        case '':
+            return 'ar.aresmanga'
+        case '':
+            return 'en.manhwax'
+        case '':
+            return 'multi.flamescans'
+        case '':
+            return 'id.komikucom'
+        case '':
+            return 'id.komiktap'
+        case '':
+            return 'id.masterkomik'
+        case '':
+            return 'en.cosmicscans'
+        case '':
+            return 'multi.kraw'
+        case '':
+            return 'en.realmscans'
+        case '':
+            return 'en.kumascans'
+        case '':
+            return 'id.mangasusu'
+        case '':
+            return 'id.manhwaindo'
+        case '':
+            return 'id.kiryuu'
+        case '':
+            return 'ar.mangasol'
+        case '':
+            return 'multi.mangagenki'
+        case '':
+            return 'es.acescans'
+        case '':
+            return 'id.manhwaland'
+        case '':
+            return 'id.kanzenin'
+        case '':
+            return 'fr.sushiscan'
+        case '':
+            return 'multi.asurascans'
+        case '':
+            return 'vi.yurineko'
+        case '':
+            return 'en.koushoku'
+        case '':
+            return 'vi.lkdtt'
+        case '':
+            return 'vi.teamojisan'
+        case '':
+            return 'vi.truyentranhlh'
+        case '':
+            return 'vi.phemanga'
+        case '':
+            return 'en.lhtranslation'
+        case '':
+            return 'en.setsuscans'
+        case '':
+            return 'multi.leviatanscans'
+        case '':
+            return 'vi.fecomic'
+        case '':
+            return 'id.reaperscansid'
+        case '':
+            return 'en.nightcomic'
+        case '':
+            return 'en.resetscans'
+        case '':
+            return 'en.twilightscans'
+        case '':
+            return 'vi.yocomic'
+        case '':
+            return 'en.isekaiscan'
+        case '':
+            return 'vi.hentaicube'
+        case '':
+            return 'en.mangatx'
+        case '':
+            return 'id.manhwaid'
+        case '':
+            return 'en.toonily'
+        case '':
+            return 'en.lilymanga'
+        case '':
+            return 'en.coloredmanga'
+        case '':
+            return 'en.manhuaplus'
+        case '':
+            return 'en.reaperscans'
+        case '':
+            return 'en.reaperscans'
+        case '':
+            return 'vi.blogtruyen'
+        case '':
+            return 'multi.batoto'
+        case '':
+            return 'zh.dmzj'
+        case '':
+            return 'ru.yaoi-chan'
+        case '':
+            return 'ru.hentai-chan'
+        case '':
+            return 'ru.manga-chan'
+        case '':
+            return 'vi.truyentranh8'
+        case '':
+            return 'en.mangazuki'
+        case '':
+            return 'en.fallen-angels'
+        case '':
+            return 'pt-br.mangadoor'
+        case '':
+            return 'en.readcomicsonline'
+        case '':
+            return 'ko.mangazukiraws'
+        case '':
+            return 'tr.mangahanta'
+        case '':
+            return 'pt-br.gekkouhentai'
+        case '':
+            return 'id.komikid'
+        case '':
+            return 'pl.phoenix-scans'
+        case '':
+            return 'bg.utsukushii'
+        case '':
+            return 'ar.onma'
+        case '':
+            return 'pt-br.animaregia'
+        case '':
+            return 'en.manhwasmen'
+        case '':
+            return 'id.mangaid'
+        case '':
+            return 'en.hentaifox'
+        case 'mangadex':
+            return 'multi.mangadex'
+        case '':
+            return 'en.mangapill'
+        case '':
+            return 'en.readm'
+        case '':
+            return 'en.readcomicsfree'
+        case '':
+            return 'vi.truyentranhaudio'
+        case '':
+            return 'en.comiconlinefree'
+        case '':
+            return 'vi.nettruyen'
+        case '':
+            return 'vi.truyenqq'
+        case '':
+            return 'en.xoxocomics'
+        case '':
+            return 'en.readcomicsbook'
+        case '':
+            return 'multi.nhentai'
+        case '':
+            return 'en.dynastyscans'
+        case '':
+            return 'en.webtoon'
+        case '':
+            return 'en.nana'
+        case '':
+            return 'en.mangabat'
+        case '':
+            return 'en.manganato'
+        case '':
+            return 'multi.xkcd'
+        case '':
+            return 'multi.otakusan'
+        case '':
+            return 'multi.myrockmanga'
+        case '':
+            return 'zh.manhuagui'
         case 'mangalife':
         case 'mangasee':
             return 'en.nepnep'
-        case 'mangadex':
-            return 'multi.mangadex'
+        case '':
+            return 'en.assortedscans'
+        case '':
+            return 'en.arcrelight'
         default:
             return '_unknown'
     }
@@ -148,4 +344,12 @@ function getStatus(status: string): number {
         default:
             return 1
     }
+}
+
+function convertMangaId(mangaid: string, source: string): string {
+    if (source == '') {
+
+    }
+
+    return ""
 }
