@@ -35,8 +35,14 @@ export interface Library {
     manga: Manga
     lastUpdated: number
     dateBookmarked: number
-    libraryTabs: any[]
+    libraryTabs: LibraryTabs[]
     updates: number
+}
+
+export interface LibraryTabs {
+    id: string
+    name: string
+    startOrder: number
 }
 
 export interface Manga {

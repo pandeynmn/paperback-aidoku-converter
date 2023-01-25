@@ -9,6 +9,7 @@ export type AidokuBackup = {
     date:     number;
     name?:    string;
     version:  string;
+    categories?: string[];
 }
 
 export interface History {
@@ -51,7 +52,7 @@ export interface Chapter {
 export interface Library {
     mangaId:     string;
     lastUpdated: number;
-    categories:  any[];
+    categories:  string[];
     dateAdded:   number;
     sourceId:    string;
     lastOpened:  number;
