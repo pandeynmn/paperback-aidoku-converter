@@ -131,8 +131,8 @@ function getStatus(status: string): number {
         case 'completed':
             return 2
         case 'abandoned':
-            return 4
-        case 'haitus':
+            return 3
+        case 'hiatus':
             return 4
         case 'unknown':
             return 0
