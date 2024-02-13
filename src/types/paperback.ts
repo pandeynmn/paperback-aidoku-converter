@@ -10,7 +10,7 @@ export type PBBackup = {
     version: string
     sourceRepositories: SourceRepository[]
     activeSources: ActiveSource[]
-  }
+}
 
 export interface ActiveSource {
     author: string
@@ -42,32 +42,32 @@ export interface Library {
 export interface LibraryTabs {
     id: string
     name: string
-    startOrder: number
+    sortOrder: number
 }
 
 export interface Manga {
-    id:             string;
-    rating?:        number;
-    covers:         any[];
-    author:         string;
-    tags:           MangaTag[];
-    desc:           string;
-    titles:         string[];
-    image:          string;
-    additionalInfo: AdditionalInfo;
-    hentai:         boolean;
-    artist:         string;
-    status:         string;
-    banner?:        string;
+    id: string
+    rating?: number
+    covers: any[]
+    author: string
+    tags: MangaTag[]
+    desc: string
+    titles: string[]
+    image: string
+    additionalInfo: AdditionalInfo
+    hentai: boolean
+    artist: string
+    status: string
+    banner?: string
 }
 
 export interface AdditionalInfo {
-    langFlag:  string;
-    users:     string;
-    langName:  string;
-    avgRating: string;
-    views:     string;
-    follows:   string;
+    langFlag: string
+    users: string
+    langName: string
+    avgRating: string
+    views: string
+    follows: string
 }
 
 export interface MangaTag {
@@ -95,23 +95,23 @@ export interface SourceRepository {
 }
 
 export interface ChapterMarker {
-    totalPages: number;
-    lastPage:   number;
-    chapter:    Chapter;
-    completed:  boolean;
-    time:       number;
-    hidden:     boolean;
+    totalPages: number
+    lastPage: number
+    chapter: Chapter
+    completed: boolean
+    time: number
+    hidden: boolean
 }
 
 export interface Chapter {
-    chapNum:      number;
-    mangaId:      string;
-    volume:       number;
-    id:           string;
-    time:         number;
-    sortingIndex: number;
-    sourceId:     string;
-    group:        string;
-    langCode:     string;
-    name:         string;
+    chapNum: number
+    mangaId: string
+    volume: number
+    id: string
+    time: number
+    sortingIndex: number
+    sourceId: string
+    group: string
+    langCode: string
+    name: string
 }
