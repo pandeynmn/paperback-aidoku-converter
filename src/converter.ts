@@ -41,7 +41,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
             continue
         }
 
-        const sourceId = item.sourceId + ' [MIGRATE ME]'
+        const sourceId = `[MIGRATE ME] ${item.sourceId}`
 
         const aidokuLibraryItem: AidokuLibrary = {
             lastOpened: new Date().getTime(),
@@ -73,7 +73,7 @@ export function convertPaperback(rawJson: string): AidokuBackup {
         if (!item.chapter || !mangaIdSet.has(item.chapter.mangaId)) {
             continue
         }
-        const sourceId = item.chapter.sourceId + ' [MIGRATE ME]'
+        const sourceId = `[MIGRATE ME] ${item.chapter.sourceId}`
         aidokuSourcesSet.add(sourceId)
 
         const sourceOrder = new Int16Array(1)
